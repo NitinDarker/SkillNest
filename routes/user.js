@@ -1,18 +1,14 @@
-import { Router } from "express";
-const app = Router();
+const { Router } = require("express");
+const userRouter = Router();
 
-app.post("/login", (req, res) => {
-  const userDetails = req.body;
-  res.json(userDetails);
-});
+userRouter.post("/login", (req, res) => {});
 
-app.post("/signup", (req, res) => {
-  const userDetails = req.body;
-});
+userRouter.post("/signup", (req, res) => {});
 
-app.get("/purchases", (req, res) => {
+userRouter.get("/courses", (req, res) => {});
 
-});
+userRouter.get("/courses/:courseId", (req, res) => {});
 
+userRouter.get("/purchases", (req, res) => {});
 
 module.exports = app;
