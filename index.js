@@ -11,7 +11,7 @@ app.use("/user", UserRouter);
 app.use("/admin", AdminRouter);
 
 app.get("/", (req, res) => {
-  console.log("Someone hit the GET request");
+  console.log("Someone has hit the GET request");
   res.send("Welcome to SkillNest, where all the courses are present!");
 });
 
