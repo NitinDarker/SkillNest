@@ -1,9 +1,12 @@
 const { Router } = require("express");
 const userRouter = Router();
+const { User, Course } = require("../db/index");
+
+userRouter.post("/signup", (req, res) => {
+    
+});
 
 userRouter.post("/login", (req, res) => {});
-
-userRouter.post("/signup", (req, res) => {});
 
 userRouter.get("/courses", (req, res) => {});
 
