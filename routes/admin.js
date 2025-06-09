@@ -11,4 +11,4 @@ adminRouter.get("/courses", (req, res) => {});
 
 adminRouter.put("/courses/:courseId", (req, res) => {});
 
-module.exports = app;
+module.exports = adminRouter;

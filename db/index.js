@@ -1,9 +1,16 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-require(".dotenv").config();
+require("dotenv").config();
 
 const mongoURL = process.env.MONGODB_URI;
 mongoose.connect(mongoURL);
+
+const courseSchema = new Schema({
+    title: String,
+    price: Number,
+    imageUrl: String,
+    description: String,
+});
 
 const userSchema = new Schema({
     email: String,
@@ -17,13 +24,6 @@ const adminSchema = new Schema({
     email: String,
     password: String,
 })
-
-const courseSchema = new Schema({
-    title: String, 
-    price: Number,
-    imageUrl: String,
-    description: String,
-});
 
 const User = mongoose.model("user", userSchema);
 const Admin = mongoose.model("admin", adminSchema);
