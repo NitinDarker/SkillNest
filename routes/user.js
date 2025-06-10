@@ -24,6 +24,7 @@ userRouter.post("/signup", async (req, res) => {
     email: email,
     username: username,
     password: password,
+    purchases: null
   });
 
   if (!ZodUser.safeParse(newUser).success) {
