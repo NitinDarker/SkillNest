@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
 const { Schema, ObjectId } = mongoose;
-require("dotenv").config();
+const dotenv = require("dotenv");
 
+dotenv.config();
 const mongoURL = process.env.MONGODB_URI;
 
 mongoose
