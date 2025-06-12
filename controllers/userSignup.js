@@ -4,7 +4,7 @@ const { z } = require("zod");
 const { User } = require("../db/index");
 
 dotenv.config();
-const jwtKey = process.env.JWT_KEY;
+const jwtKey = process.env.JWT_USER_KEY;
 
 const ZodUser = z.object({
   username: z.string("Invalid username!").min(1).max(12),
@@ -13,9 +13,7 @@ const ZodUser = z.object({
 });
 
 async function signupController(req, res) {
-  const email = req.body.email;
-  const username = req.body.username;
-  const password = req.body.password;
+  const { email, username, password } = req.body;
 
   const newUser = new User({
     email: email,
@@ -24,8 +22,11 @@ async function signupController(req, res) {
   });
 
   if (!ZodUser.safeParse(newUser).success) {
-    // => { success: true; data: "tuna" }
-    return res.status(400).send("Invalid Credentials!");
+    // => { success: true; data: "user" }
+    return res.status(400).json({
+      success: false,
+      message: "Invalid Credentials!",
+    });
   }
 
   try {
@@ -40,7 +41,10 @@ async function signupController(req, res) {
     { id: newUser._id, username: newUser.username },
     jwtKey
   );
+
   res.status(200).json({
+    message: "New user successfully created!",
+    username: username,
     token: token,
   });
 }

@@ -3,7 +3,7 @@ const { userAuth } = require("../middlewares/userAuth");
 const { signupController } = require("../controllers/userSignup");
 const { loginController } = require("../controllers/userLogin");
 const { courseDisplay } = require("../controllers/courseDisplay");
-const { courseIdController } = require("../controllers/courseId");
+const { courseDisplayWithId } = require("../controllers/courseDisplayId");
 const { purchasesController } = require("../controllers/my_courses");
 
 const userRouter = Router();
@@ -14,7 +14,7 @@ userRouter.post("/login", loginController);
 
 userRouter.get("/courses", userAuth, courseDisplay);
 
-userRouter.get("/courses/:courseId", userAuth, courseIdController);
+userRouter.get("/courses/:courseId", userAuth, courseDisplayWithId);
 
 userRouter.get("/purchases", userAuth, purchasesController);
 

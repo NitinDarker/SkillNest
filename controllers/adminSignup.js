@@ -4,7 +4,7 @@ const { z } = require("zod");
 const { Admin } = require("../db/index");
 
 dotenv.config();
-const jwtKey = process.env.JWT_KEY;
+const jwtKey = process.env.JWT_ADMIN_KEY;
 
 const ZodAdmin = z.object({
   username: z.string("Invalid username!").min(1).max(12),
@@ -13,9 +13,7 @@ const ZodAdmin = z.object({
 });
 
 async function signupController(req, res) {
-  const email = req.body.email;
-  const username = req.body.username;
-  const password = req.body.password;
+  const { email, username, password } = req.body;
 
   const newAdmin = new Admin({
     email: email,
@@ -24,8 +22,11 @@ async function signupController(req, res) {
   });
 
   if (!ZodAdmin.safeParse(newAdmin).success) {
-    // => { success: true; data: "tuna" }
-    return res.status(400).send("Invalid Credentials!");
+    // => { success: true; data: "admin" }
+    return res.status(400).json({
+      success: false,
+      message: "Invalid Credentials!",
+    });
   }
 
   try {
@@ -40,7 +41,10 @@ async function signupController(req, res) {
     { id: newAdmin._id, username: newAdmin.username },
     jwtKey
   );
+
   res.status(200).json({
+    message: "New admin successfully created!",
+    username: username,
     token: token,
   });
 }

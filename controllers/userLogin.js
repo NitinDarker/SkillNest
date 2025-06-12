@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const { User } = require("../db/index");
 
 dotenv.config();
-const jwtKey = process.env.JWT_KEY;
+const jwtKey = process.env.JWT_USER_KEY;
 
 async function loginController(req, res) {
   const token = req.headers.authorization;
@@ -14,7 +14,11 @@ async function loginController(req, res) {
       payload = jwt.verify(token, jwtKey);
     } catch (e) {
       console.log(e);
-      return res.status(404).send("User does not exist");
+      return res.status(404).json({
+        success: false,
+        message: "User does not exist",
+        error: "Invalid token",
+      });
     }
     return res.status(200).json({
       success: true,
@@ -23,21 +27,25 @@ async function loginController(req, res) {
   }
 
   // Login without JWT
-  const username = req.body.username;
-  const password = req.body.password;
+  const { username, password } = req.body;
 
   try {
     const foundUser = await User.findOne({
       username: username,
       password: password,
     });
+    const token = jwt.sign({ id: foundUser._id, username: username }, jwtKey);
     return res.status(200).json({
       success: true,
       message: `Hello! ${foundUser.username}`,
+      token: token,
     });
   } catch (err) {
     console.log(err);
-    return res.status(404).send("User does not exist!");
+    return res.status(404).json({
+      success: false,
+      message: "User does not exist!",
+    });
   }
 }
 
