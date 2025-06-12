@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const { signupController } = require("../controllers/adminSignup");
+const { loginController } = require("../controllers/adminLogin")
 
 const adminRouter = Router();
 
-adminRouter.post("/login", (req, res) => {});
+adminRouter.post("/login", loginController);
 
 adminRouter.post("/signup", signupController);
 

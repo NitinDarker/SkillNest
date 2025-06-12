@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { userAuth } = require("../middlewares/userAuth");
 const { signupController } = require("../controllers/userSignup");
-const { loginController } = require("../controllers/userLoginController");
+const { loginController } = require("../controllers/userLogin");
 const { allCourseController } = require("../controllers/allCourseController");
 const { courseIdController } = require("../controllers/courseId");
 const { purchasesController } = require("../controllers/my_courses");
