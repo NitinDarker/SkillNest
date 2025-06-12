@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const jwtKey = process.env.JWT_USER_KEY;
+const jwtKey = process.env.JWT_ADMIN_KEY;
 
-function userAuth(req, res, next) {
+function adminAuth(req, res, next) {
   const token = req.headers.authorization;
   let payload = null;
 
@@ -17,11 +17,11 @@ function userAuth(req, res, next) {
     payload = jwt.verify(token, jwtKey);
   } catch (e) {
     console.log(e);
-    return res.status(404).send("User does not exist");
+    return res.status(404).send("Admin does not exist");
   }
   req.id = payload.id;
   req.username = payload.username;
   next();
 }
 
-module.exports = { userAuth };
+module.exports = { adminAuth };
