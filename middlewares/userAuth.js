@@ -5,8 +5,13 @@ const jwtKey = process.env.JWT_KEY;
 function userAuth(req, res, next) {
   const token = req.headers.authorization;
 
+  if (!token) {
+    next();
+  }
+
   try {
-    jwt.verify(token, jwtKey);
+    const username = jwt.verify(token, jwtKey);
+    console.log(username);
   } catch (e) {
     console.log(e);
     return res.status(401).send("User does not exist");

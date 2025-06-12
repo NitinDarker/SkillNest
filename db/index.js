@@ -22,7 +22,7 @@ const userSchema = new Schema({
   email: { type: String, unique: true },
   username: { type: String, unique: true },
   password: String,
-  purchases: [{ type: ObjectId, ref: "Course" }],
+  purchases: [{ type: ObjectId, ref: "Course", default: [] }],
 });
 
 const adminSchema = new Schema({

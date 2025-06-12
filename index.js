@@ -1,6 +1,8 @@
 const express = require("express");
+const dotenv = require("dotenv");
 const app = express();
-const PORT = 3000;
+dotenv.config();
+const PORT = process.env.PORT;
 
 const UserRouter = require("./routes/user");
 const AdminRouter = require("./routes/admin");
@@ -10,9 +12,11 @@ app.use(express.json());
 app.use("/user", UserRouter);
 app.use("/admin", AdminRouter);
 
+// Landing Page
 app.get("/", (req, res) => {
-  console.log("Someone has hit the GET request");
-  res.send("Welcome to SkillNest, where all the courses are present!");
+  res.status(200).json({
+    message: "Welcome to SkillNest, where all the courses are present!",
+  });
 });
 
 // Catch-All Middleware

@@ -1,48 +1,13 @@
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
 const { Router } = require("express");
-const { z } = require("zod");
-const { User, Course } = require("../db/index");
 const { userAuth } = require("../middlewares/userAuth");
+const { signupController } = require("../controllers/signup");
+const { loginController } = require("../controllers/login");
 
-dotenv.config();
 const userRouter = Router();
-const jwtKey = process.env.JWT_KEY;
 
-const ZodUser = z.object({
-  username: z.string("Invalid username!").min(1).max(12),
-  email: z.string().email("Invalid email address!"),
-  password: z.string().min(3).max(14),
-});
+userRouter.post("/signup", signupController);
 
-userRouter.post("/signup", async (req, res) => {
-  const email = req.body.email;
-  const username = req.body.username;
-  const password = req.body.password;
-
-  const newUser = new User({
-    email: email,
-    username: username,
-    password: password,
-  });
-
-  if (!ZodUser.safeParse(newUser).success) {
-    // => { success: true; data: "tuna" }
-    return res.status(400).send("Invalid Credentials!");
-  }
-
-  newUser.purchases = [];
-  await newUser.save();
-
-  const token = jwt.sign({ username: newUser.username }, jwtKey);
-  res.status(200).json({
-    token: token,
-  });
-});
-
-userRouter.post("/login", userAuth, (req, res) => {
-  res.send("Verified");
-});
+userRouter.post("/login", userAuth, loginController);
 
 userRouter.get("/courses", (req, res) => {});
 
