@@ -1,3 +1,5 @@
 function loginController(req, res) {
-    res.send("Verified");
+  res.send("Verified");
 }
+
+module.exports = { loginController };
