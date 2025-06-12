@@ -1,6 +1,10 @@
 const { User } = require("../db/index");
 
 async function loginController(req, res) {
+    if (req.id) {
+        // JWT verified
+    }
+
   const username = req.body.username;
   const password = req.body.password;
 
