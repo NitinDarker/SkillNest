@@ -11,7 +11,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 const courseSchema = new Schema({
-  title: String,
+  title: { type: String, unique: true },
   price: Number,
   imageUrl: String,
   description: String,
