@@ -1,11 +1,9 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const { Router } = require("express");
 const { z } = require("zod");
-const { User, Course } = require("../db/index");
+const { User } = require("../db/index");
 
 dotenv.config();
-const userRouter = Router();
 const jwtKey = process.env.JWT_KEY;
 
 const ZodUser = z.object({
