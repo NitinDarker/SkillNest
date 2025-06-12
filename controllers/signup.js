@@ -31,7 +31,7 @@ async function signupController(req, res) {
   try {
     await newUser.save();
   } catch (err) {
-    return res.status(401).json({
+    return res.status(400).json({
       message: "User with same username or email already exists",
     });
   }
