@@ -6,6 +6,8 @@ const PORT = process.env.PORT;
 
 const UserRouter = require("./routes/user");
 const AdminRouter = require("./routes/admin");
+const { courseDisplay } = require("./controllers/courseDisplay");
+const { courseDisplayWithId } = require("./controllers/courseDisplayId");
 
 app.use(express.json());
 
@@ -18,6 +20,10 @@ app.get("/", (req, res) => {
     message: "Welcome to SkillNest, where all the courses are present!",
   });
 });
+
+app.get("/course", courseDisplay);
+
+app.get("/course/:courseId", courseDisplayWithId);
 
 // Catch-All Middleware
 app.use((req, res, next) => {

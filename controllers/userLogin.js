@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const { User } = require("../db/index");
 
@@ -20,31 +21,52 @@ async function loginController(req, res) {
         error: "Invalid token",
       });
     }
+    const myUser = await User.findById(payload.id);
     return res.status(200).json({
       success: true,
-      message: `Hello! ${payload.username}`,
+      message: `Hello! ${myUser.username}`,
     });
   }
 
   // Login without JWT
   const { username, password } = req.body;
 
-  try {
-    const foundUser = await User.findOne({
-      username: username,
-      password: password,
+  if (!username || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Username and password are required.",
     });
+  }
+
+  try {
+    const foundUser = await User.findOne({ username: username });
+
+    if (!foundUser) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid username",
+      });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, foundUser.password);
+    if (!passwordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect password",
+      });
+    }
+
     const token = jwt.sign({ id: foundUser._id }, jwtKey);
     return res.status(200).json({
       success: true,
-      message: `Hello! ${foundUser.username}`,
+      message: `Welcome back! ${foundUser.username}`,
       token: token,
     });
   } catch (err) {
     console.log(err);
     return res.status(404).json({
       success: false,
-      message: "User does not exist!",
+      message: "User login error!",
     });
   }
 }

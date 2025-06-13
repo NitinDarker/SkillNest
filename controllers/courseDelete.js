@@ -2,34 +2,30 @@ const { Course } = require("../db");
 
 async function courseDelete(req, res) {
   const courseId = req.params.courseId;
-
-  const foundCourse = await Course.findOne({
-    _id: courseId,
-    creatorId: req.id,
-  });
-  if (!foundCourse) {
-    return res.status(401).json({
-      success: false,
-      message: "You cannot delete someone else's course",
-    });
-  }
+  const adminId = req.id;
 
   try {
-    const updatedCourse = await Course.findByIdAndDelete(courseId);
+    // Check to see if given course belongs to same admin
+    const foundCourse = await Course.findOne({
+      _id: courseId,
+      creatorId: adminId,
+    });
 
-    if (!updatedCourse) {
-      res.status(400).json({
+    if (!foundCourse) {
+      return res.status(404).json({
         success: false,
-        message: "Course does not exist",
+        message: "Course not found or you don't have permission to delete it.",
       });
     }
 
+    await Course.findByIdAndDelete(courseId);
+
     return res.status(200).json({
       success: true,
-      message: "Course is successfully deleted!",
+      message: "Course successfully deleted!",
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     res.status(400).json({
       success: false,
       message: "Invalid Course Id",

@@ -14,14 +14,14 @@ adminRouter.post("/signup", signupController);
 
 adminRouter.post("/login", loginController);
 
-adminRouter.get("/courses", adminAuth, courseDisplay);
+adminRouter.get("/course", courseDisplay);
 
-adminRouter.post("/courses", adminAuth, createCourse);
+adminRouter.post("/course", adminAuth, createCourse);
 
-adminRouter.get("/courses/:courseId", adminAuth, courseDisplayWithId);
+adminRouter.get("/course/:courseId", courseDisplayWithId);
 
-adminRouter.put("/courses/:courseId", adminAuth, courseEdit);
+adminRouter.put("/course/:courseId", adminAuth, courseEdit);
 
-adminRouter.delete("/courses/:courseId", adminAuth, courseDelete);
+adminRouter.delete("/course/:courseId", adminAuth, courseDelete);
 
 module.exports = adminRouter;

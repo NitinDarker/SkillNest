@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
 const { Admin } = require("../db/index");
 
@@ -20,31 +21,52 @@ async function loginController(req, res) {
         error: "Invalid token",
       });
     }
+    const myAdmin = await Admin.findById(payload.id);
     return res.status(200).json({
       success: true,
-      message: `Hello! ${payload.username}`,
+      message: `Hello! ${myAdmin.username}`,
     });
   }
 
   // Login without JWT
   const { username, password } = req.body;
 
-  try {
-    const foundUser = await Admin.findOne({
-      username: username,
-      password: password,
+  if (!username || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Username and password are required.",
     });
-    const token = jwt.sign({ id: foundUser._id }, jwtKey);
+  }
+
+  try {
+    const foundAdmin = await Admin.findOne({ username: username });
+
+    if (!foundAdmin) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid username",
+      });
+    }
+
+    const passwordMatch = await bcrypt.compare(password, foundAdmin.password);
+    if (!passwordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect password",
+      });
+    }
+
+    const token = jwt.sign({ id: foundAdmin._id }, jwtKey);
     return res.status(200).json({
       success: true,
-      message: `Hello! ${foundUser.username}`,
+      message: `Welcome back! ${foundAdmin.username}`,
       token: token,
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res.status(404).json({
       success: false,
-      message: "Admin does not exist!",
+      message: "Admin login error!",
     });
   }
 }

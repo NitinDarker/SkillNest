@@ -13,12 +13,12 @@ userRouter.post("/signup", signupController);
 
 userRouter.post("/login", loginController);
 
-userRouter.get("/courses", userAuth, courseDisplay);
+userRouter.get("/course", courseDisplay);
 
-userRouter.get("/courses/:courseId", userAuth, courseDisplayWithId);
+userRouter.get("/course/:courseId", courseDisplayWithId);
 
 userRouter.post("/purchase", userAuth, coursePurchase);
 
-userRouter.get("/purchases", userAuth, purchasesController);
+userRouter.get("/purchase", userAuth, purchasesController);
 
 module.exports = userRouter;
