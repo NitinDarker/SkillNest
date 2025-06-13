@@ -37,7 +37,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({
     message: "Sorry! Something has occurred on our end!",
   });
-  console.log(err);
+  console.error(err);
 });
 
 app.listen(PORT, () => {

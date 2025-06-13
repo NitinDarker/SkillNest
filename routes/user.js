@@ -4,7 +4,7 @@ const { signupController } = require("../controllers/userSignup");
 const { loginController } = require("../controllers/userLogin");
 const { courseDisplay } = require("../controllers/courseDisplay");
 const { courseDisplayWithId } = require("../controllers/courseDisplayId");
-const { purchasesController } = require("../controllers/purchases");
+const { purchaseDisplay } = require("../controllers/purchases");
 const { coursePurchase } = require("../controllers/CoursePurchase");
 
 const userRouter = Router();
@@ -19,6 +19,6 @@ userRouter.get("/course/:courseId", courseDisplayWithId);
 
 userRouter.post("/purchase", userAuth, coursePurchase);
 
-userRouter.get("/purchase", userAuth, purchasesController);
+userRouter.get("/purchase", userAuth, purchaseDisplay);
 
 module.exports = userRouter;

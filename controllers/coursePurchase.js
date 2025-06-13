@@ -1,32 +1,42 @@
 const { User, Course, Purchase } = require("../db");
+const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Types;
 
 async function coursePurchase(req, res) {
   const userId = req.id;
   const courseId = req.body.courseId;
 
   try {
-    if (!(await Course.findById(courseId))) {
-      throw new Error();
+    if (!courseId || !ObjectId.isValid(courseId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Course ID format.",
+      });
+    }
+
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found.",
+      });
     }
 
     const user = await User.findById(userId);
-    let purchasesArr = user.purchases;
 
-    for (const id of purchasesArr) {
-      if (id == courseId) {
-        return res.status(400).json({
-          success: false,
-          message: "Course already purchased",
-        });
-      }
+    const isAlreadyPurchased = user.purchases.includes(courseId);
+
+    if (isAlreadyPurchased) {
+      return res.status(400).json({
+        success: false,
+        message: "Course already purchased",
+      });
     }
-    purchasesArr.push(courseId);
 
-    await User.updateOne(
-      { _id: userId },
-      {
-        purchases: purchasesArr,
-      }
+    await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { purchases: courseId } }, // $addToSet only adds if not present
+      { new: true }
     );
 
     const newPurchase = new Purchase({
@@ -34,17 +44,20 @@ async function coursePurchase(req, res) {
       userId: userId,
     });
     await newPurchase.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Course purchased successfully",
+      purchaseId: newPurchase._id,
+      courseId,
+    });
   } catch (err) {
+    console.error(error);
     return res.status(404).json({
       success: false,
       message: "Invalid Course Id",
     });
   }
-
-  res.status(200).json({
-    success: true,
-    message: "Course purchased successfully",
-  });
 }
 
 module.exports = { coursePurchase };

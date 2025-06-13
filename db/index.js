@@ -15,14 +15,14 @@ const courseSchema = new Schema({
   price: Number,
   imageUrl: String,
   description: String,
-  creatorId: { type: ObjectId, ref: "Admin" },
+  creatorId: { type: ObjectId, ref: "admin" },
 });
 
 const userSchema = new Schema({
   email: { type: String, unique: true },
   username: { type: String, unique: true },
   password: String,
-  purchases: [{ type: ObjectId, ref: "Course", default: [] }],
+  purchases: [{ type: ObjectId, ref: "course", default: [] }],
 });
 
 const adminSchema = new Schema({
@@ -32,8 +32,8 @@ const adminSchema = new Schema({
 });
 
 const purchaseSchema = new Schema({
-  courseId: { type: ObjectId, ref: "Course" },
-  userId: { type: ObjectId, ref: "User" },
+  courseId: { type: ObjectId, ref: "course" },
+  userId: { type: ObjectId, ref: "user" },
 });
 
 const User = mongoose.model("user", userSchema);
