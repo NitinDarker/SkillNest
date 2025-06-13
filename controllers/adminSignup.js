@@ -37,10 +37,7 @@ async function signupController(req, res) {
     });
   }
 
-  const token = jwt.sign(
-    { id: newAdmin._id, username: newAdmin.username },
-    jwtKey
-  );
+  const token = jwt.sign({ id: newAdmin._id }, jwtKey);
 
   res.status(200).json({
     message: "New admin successfully created!",

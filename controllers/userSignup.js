@@ -37,10 +37,7 @@ async function signupController(req, res) {
     });
   }
 
-  const token = jwt.sign(
-    { id: newUser._id, username: newUser.username },
-    jwtKey
-  );
+  const token = jwt.sign({ id: newUser._id }, jwtKey);
 
   res.status(200).json({
     message: "New user successfully created!",

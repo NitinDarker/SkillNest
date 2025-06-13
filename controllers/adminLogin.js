@@ -34,7 +34,7 @@ async function loginController(req, res) {
       username: username,
       password: password,
     });
-    const token = jwt.sign({ id: foundUser._id, username: username }, jwtKey);
+    const token = jwt.sign({ id: foundUser._id }, jwtKey);
     return res.status(200).json({
       success: true,
       message: `Hello! ${foundUser.username}`,
