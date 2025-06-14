@@ -13,7 +13,6 @@ function App () {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/course' element={<CourseDisplay />} />
         </Routes>
-        <Link to='/login'><button>Login</button> </Link>
       </BrowserRouter>
     </>
   )

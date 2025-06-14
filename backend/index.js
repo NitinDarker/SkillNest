@@ -11,7 +11,13 @@ const { courseDisplay } = require("./controllers/courseDisplay");
 const { courseDisplayWithId } = require("./controllers/courseDisplayId");
 
 app.use(express.json());
-app.use(cors());
+
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: "GET,PUT,POST,DELETE",
+    credentials: true,
+  })
+);
 
 app.use("/user", UserRouter);
 app.use("/admin", AdminRouter);

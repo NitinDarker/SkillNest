@@ -6,6 +6,7 @@ export default function CourseDisplay () {
   useEffect(() => {
     async function makeRequest () {
       const res = await axios.get('http://localhost:3000/course')
+      
       return res.data.available;
     }
     setResponse(makeRequest())
