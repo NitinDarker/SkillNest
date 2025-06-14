@@ -1,12 +1,20 @@
-import { useState } from 'react'
 import './App.css'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import LandingPage from '../components/LandingPage'
+import LoginPage from '../components/LoginPage'
+import CourseDisplay from '../components/CourseDisplay'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function App () {
   return (
     <>
-        <button onClick={() => {setCount(count + 1)}}>count = {count}</button>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<LandingPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/course' element={<CourseDisplay />} />
+        </Routes>
+        <Link to='/login'><button>Login</button> </Link>
+      </BrowserRouter>
     </>
   )
 }
