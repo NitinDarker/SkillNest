@@ -17,8 +17,8 @@ export default function LandingPage () {
   return (
     <>
       <div>{response}</div>
-      <button onClick={() => navigate('/user/login')}>Login</button>
-      <button onClick={() => navigate('/user/signup')}>Signup</button>
+      <button onClick={() => navigate('/user/login')}>User Login</button>
+      <button onClick={() => navigate('/user/signup')}>User Signup</button>
     </>
   )
 }
